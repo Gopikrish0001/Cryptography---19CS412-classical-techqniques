@@ -35,6 +35,7 @@ Implementation using C or pyhton code
 PROGRAM:
 CaearCipher.
 
+```
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -93,9 +94,14 @@ int main() {
 
     return 0;
 }
+```
 
 ## OUTPUT:
 ![Screenshot (72)](https://github.com/user-attachments/assets/97332781-460f-4ffc-9339-68a13d699b99)
+
+## INPUT:
+ENCRYPTED TEXT: KSTMOVMWLRER
+DECRYPTED TEXT: GOPIKRISHNAN
 
 
 ## RESULT:
