@@ -1,9 +1,11 @@
 Cryptography---19CS412-classical-techqniques
+
 Hill Cipher
+
 Hill Cipher using with different key values
 
 Reg no : 212223043001
-Name : Gopikrishnan M
+Name  :  Gopikrishnan M
 
 AIM:
 To develop a simple C program to implement Hill Cipher.
@@ -19,6 +21,7 @@ Step 3:
 Testing algorithm with different key values.
 
 ALGORITHM DESCRIPTION:
+
 The Playfair cipher uses a 5 by 5 table containing a key word or phrase. To generate the key table, first fill the spaces in the table with the letters of the keyword, then fill the remaining spaces with the rest of the letters of the alphabet in order (usually omitting "Q" to reduce the alphabet to fit; other versions put both "I" and "J" in the same space). The key can be written in the top rows of the table, from left to right, or in some other pattern, such as a spiral beginning in the upper-left-hand corner and ending in the centre. The keyword together with the conventions for filling in the 5 by 5 table constitutes the cipher key. To encrypt a message, one would break the message into digrams (groups of 2 letters) such that, for example, "HelloWorld" becomes "HE LL OW OR LD", and map them out on the key table. Then apply the following 4 rules, to each pair of letters in the plaintext:
 
 If both letters are the same (or only one letter is left), add an "X" after the first letter. Encrypt the new pair and continue. Some variants of Playfair use "Q" instead of "X", but any letter, itself uncommon as a repeated pair, will do.
