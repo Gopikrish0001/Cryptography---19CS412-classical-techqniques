@@ -135,14 +135,8 @@ int main() {
 
 ```
 
-
-
-
 ## OUTPUT:
-
-![Screenshot (78)](https://github.com/user-attachments/assets/6e6afbb0-1705-4d99-a3f7-65d3a1d124c2)
-
-
+![image](https://github.com/user-attachments/assets/904d2b0d-18a9-44ec-9933-618f277a3c49)
 
 ## RESULT:
 The program is executed successfully
