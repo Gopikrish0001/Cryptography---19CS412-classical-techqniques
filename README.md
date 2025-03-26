@@ -1,157 +1,147 @@
-# PlayFair Cipher
-Playfair Cipher using with different key values
+# Caeser Cipher
+Caeser Cipher using with different key values
+
+
 
 # Reg no : 212223043001
 # Name :   GOPIKRISHNAN M
 
 # AIM:
 
-To develop a simple C program to implement PlayFair Cipher.
+To encrypt and decrypt the given message by using Ceaser Cipher encryption algorithm.
 
 ## DESIGN STEPS:
+Step 1: Design of Caeser Cipher algorithnm
 
-### Step 1:
+Step 2: Implementation using C or pyhton code
 
-Design of PlayFair Cipher algorithnm 
-
-### Step 2:
-
-Implementation using C or pyhton code
-
-### Step 3:
-
-Testing algorithm with different key values. 
+Step 3: In Ceaser Cipher each letter in the plaintext is replaced by a letter some fixed number of positions down the alphabet.
+For example, with a left shift of 3, D would be replaced by A, E would become B, and so on.
+The encryption can also be represented using modular arithmetic by first transforming the letters into numbers, according to the
+scheme, A = 0, B = 1, Z = 25.
+Encryption of a letter x by a shift n can be described mathematically as, En(x) = (x + n) mod26
+Decryption is performed similarly, Dn (x)=(x - n) mod26
 
 ## PROGRAM:
+```
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h> 
+int keymat[3][3] = {
+    { 1, 2, 1 },
+    { 2, 3, 2 },
+    { 2, 2, 1 }
+};
 
-#include<stdio.h>
-#include<string.h>
-#include<ctype.h>
-#define MX 5
+int invkeymat[3][3] = {
+    { -1, 0, 1 },
+    { 2, -1, 0 },
+    { -2, 2, -1 }
+};
 
-void playfair(char ch1, char ch2, char key[MX][MX]) {
-    int i, j, w, x, y, z;
-    FILE *out;
-    if ((out = fopen("cipher.txt", "a+")) == NULL) {
-        printf("File Corrupted.\n");
-        return;
-    }
+char key[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    // Find the positions of ch1 and ch2 in the key matrix
-    for (i = 0; i < MX; i++) {
-        for (j = 0; j < MX; j++) {
-            if (ch1 == key[i][j]) {
-                w = i;
-                x = j;
-            }
-            else if (ch2 == key[i][j]) {
-                y = i;
-                z = j;
-            }
-        }
-    }
 
-    // Encrypt based on the position of the characters
-    if (w == y) { // Same row
-        x = (x + 1) % 5;
-        z = (z + 1) % 5;
-        printf("%c%c", key[w][x], key[y][z]);
-        fprintf(out, "%c%c", key[w][x], key[y][z]);
-    } 
-    else if (x == z) { // Same column
-        w = (w + 1) % 5;
-        y = (y + 1) % 5;
-        printf("%c%c", key[w][x], key[y][z]);
-        fprintf(out, "%c%c", key[w][x], key[y][z]);
-    } 
-    else { // Rectangle swap
-        printf("%c%c", key[w][z], key[y][x]);
-        fprintf(out, "%c%c", key[w][z], key[y][x]);
-    }
+char* encode(char a, char b, char c) {
+    static char ret[4]; 
+    int x, y, z;
+    int posa = (int) a - 65;
+    int posb = (int) b - 65;
+    int posc = (int) c - 65;
+    
+    x = posa * keymat[0][0] + posb * keymat[1][0] + posc * keymat[2][0];
+    y = posa * keymat[0][1] + posb * keymat[1][1] + posc * keymat[2][1];
+    z = posa * keymat[0][2] + posb * keymat[1][2] + posc * keymat[2][2];
+    
+    ret[0] = key[x % 26];
+    ret[1] = key[y % 26];
+    ret[2] = key[z % 26];
+    ret[3] = '\0';  
+    
+    return ret;
+}
 
-    fclose(out);
+
+char* decode(char a, char b, char c) {
+    static char ret[4];  
+    int x, y, z;
+    int posa = (int) a - 65;
+    int posb = (int) b - 65;
+    int posc = (int) c - 65;
+    
+    x = posa * invkeymat[0][0] + posb * invkeymat[1][0] + posc * invkeymat[2][0];
+    y = posa * invkeymat[0][1] + posb * invkeymat[1][1] + posc * invkeymat[2][1];
+    z = posa * invkeymat[0][2] + posb * invkeymat[1][2] + posc * invkeymat[2][2];
+    
+    ret[0] = key[(x % 26 < 0) ? (26 + x % 26) : (x % 26)];
+    ret[1] = key[(y % 26 < 0) ? (26 + y % 26) : (y % 26)];
+    ret[2] = key[(z % 26 < 0) ? (26 + z % 26) : (z % 26)];
+    ret[3] = '\0'; 
+    
+    return ret;
 }
 
 int main() {
-    int i, j, k = 0, l, m = 0, n;
-    char key[MX][MX], keyminus[25], keystr[10], str[25] = {0};
-    char alpa[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    char msg[1000];
+    char enc[1000] = "";  
+    char dec[1000] = "";  
+    int n;
+
     
-    printf("\nEnter key: ");
-    fgets(keystr, sizeof(keystr), stdin);
-    keystr[strcspn(keystr, "\n")] = 0; // Remove newline character
+    printf(" ");
+    fgets(msg, sizeof(msg), stdin);
+    msg[strcspn(msg, "\n")] = '\0'; 
 
-    printf("\nEnter the plain text: ");
-    fgets(str, sizeof(str), stdin);
-    str[strcspn(str, "\n")] = 0; // Remove newline character
+    printf("Simulation of Hill Cipher\n");
+    printf("Input message : %s\n", msg);
 
-    n = strlen(keystr);
-    for (i = 0; i < n; i++) {
-        if (keystr[i] == 'j') keystr[i] = 'i';
-        else if (keystr[i] == 'J') keystr[i] = 'I';
-        keystr[i] = toupper(keystr[i]);
+    // Convert the message to uppercase
+    for (int i = 0; i < strlen(msg); i++) {
+        msg[i] = toupper(msg[i]);
     }
 
-    for (i = 0; i < strlen(str); i++) {
-        if (str[i] == 'j') str[i] = 'i';
-        else if (str[i] == 'J') str[i] = 'I';
-        str[i] = toupper(str[i]);
-    }
-
-    // Remove letters already in the key from the alphabet
-    j = 0;
-    for (i = 0; i < 26; i++) {
-        for (k = 0; k < n; k++) {
-            if (keystr[k] == alpa[i]) break;
-            else if (alpa[i] == 'J') break;
-        }
-        if (k == n) {
-            keyminus[j] = alpa[i];
-            j++;
+    // Remove spaces and padding
+    n = strlen(msg) % 3;
+    if (n != 0) {
+        for (int i = 1; i <= (3 - n); i++) {
+            strcat(msg, "X");
         }
     }
 
-    // Construct the 5x5 key matrix
-    k = 0;
-    for (i = 0; i < MX; i++) {
-        for (j = 0; j < MX; j++) {
-            if (k < n) {
-                key[i][j] = keystr[k];
-                k++;
-            } else {
-                key[i][j] = keyminus[m];
-                m++;
-            }
-            printf("%c ", key[i][j]);
-        }
-        printf("\n");
+    printf("Padded message : %s\n", msg);
+
+    // Encode the message in blocks of 3 characters
+    for (int i = 0; i < strlen(msg); i += 3) {
+        char a = msg[i];
+        char b = msg[i + 1];
+        char c = msg[i + 2];
+        strcat(enc, encode(a, b, c));
     }
 
-    printf("\n\nEntered text : %s\nCipher Text : ", str);
+    printf("Encoded message : %s\n", enc);
 
-    // Encrypt the plaintext using the Playfair cipher
-    for (i = 0; i < strlen(str); i++) {
-        if (str[i] == 'J') str[i] = 'I';
-        if (str[i + 1] == '\0') playfair(str[i], 'X', key); // Add padding 'X' if odd length
-        else {
-            if (str[i + 1] == 'J') str[i + 1] = 'I';
-            if (str[i] == str[i + 1]) playfair(str[i], 'X', key); // If same letters, use 'X' as padding
-            else {
-                playfair(str[i], str[i + 1], key);
-                i++; // Skip the next letter after processing a pair
-            }
-        }
+    // Decode the message in blocks of 3 characters
+    for (int i = 0; i < strlen(enc); i += 3) {
+        char a = enc[i];
+        char b = enc[i + 1];
+        char c = enc[i + 2];
+        strcat(dec, decode(a, b, c));
     }
 
-    printf("\nDecrypted text: %s", str);
+    printf("Decoded message : %s\n", dec);
+
     return 0;
 }
+
+```
+
 
 
 
 ## OUTPUT:
 
-![Screenshot (73)](https://github.com/user-attachments/assets/c4637eb1-1d87-4b29-9b1d-2798a5694538)
+![Screenshot (78)](https://github.com/user-attachments/assets/6e6afbb0-1705-4d99-a3f7-65d3a1d124c2)
+
 
 
 ## RESULT:
